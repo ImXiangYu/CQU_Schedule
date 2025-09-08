@@ -1,6 +1,7 @@
 // assets/js/main.js
 
 import { timeSlots, firstWeek } from './config.js';
+// 移除了 color-utils.js 的导入
 
 // --- 全局状态 ---
 let currentWeek = 1;
@@ -14,16 +15,18 @@ const header = document.getElementById("header");
 const timetable = document.getElementById("timetable");
 const headerTitle = document.getElementById("header-title");
 
-// 【已移除】所有字体控制相关的元素获取和函数
+// --- 核心功能函数 ---
 
 function renderTable(week) {
+  // 移除了 resetColorAssignments()
   prevWeekBtn.disabled = (week <= 1);
   nextWeekBtn.disabled = (week >= 25);
   headerTitle.innerText = `课程表（第${week}周）`;
-  timetable.innerHTML = "";
+  timetable.innerHTML = ""; // 清空表格
 
   const displayWeekStart = new Date(firstWeek.getTime() + (week - 1) * 7 * 86400000);
 
+  // 渲染表头 (日期)
   const days = ["周一", "周二", "周三", "周四", "周五", "周六", "周日"];
   const headerRow = document.createElement("tr");
   headerRow.innerHTML = "<th>时间</th>";
@@ -33,10 +36,12 @@ function renderTable(week) {
   }
   timetable.appendChild(headerRow);
 
+  // 渲染课程表主体
   const spannedCells = Array(timeSlots.length).fill(0).map(() => Array(7).fill(false));
   for (let i = 0; i < timeSlots.length; i++) {
     const row = document.createElement("tr");
     const slot = timeSlots[i];
+    
     row.innerHTML = `<th>第${i+1}节<br><small>${String(slot.startHour).padStart(2, '0')}:${String(slot.startMinute).padStart(2, '0')}-${String(slot.endHour).padStart(2, '0')}:${String(slot.endMinute).padStart(2, '0')}</small></th>`;
 
     for (let j = 0; j < 7; j++) {
@@ -48,20 +53,14 @@ function renderTable(week) {
         const cellYear = day.getFullYear();
         const cellMonth = day.getMonth();
         const cellDate = day.getDate();
-
         const eventDateObj = new Date(ev.start);
         const eventYear = eventDateObj.getFullYear();
         const eventMonth = eventDateObj.getMonth();
         const eventDate = eventDateObj.getDate();
-
-        if (!(cellYear === eventYear && cellMonth === eventMonth && cellDate === eventDate)) {
-            return false;
-        }
-
+        if (!(cellYear === eventYear && cellMonth === eventMonth && cellDate === eventDate)) return false;
         const eventTimeInMinutes = eventDateObj.getHours() * 60 + eventDateObj.getMinutes();
         const slotStartTimeInMinutes = slot.startHour * 60 + slot.startMinute;
         const slotEndTimeInMinutes = slot.endHour * 60 + slot.endMinute;
-        
         return eventTimeInMinutes >= slotStartTimeInMinutes && eventTimeInMinutes < slotEndTimeInMinutes;
       });
 
@@ -74,9 +73,7 @@ function renderTable(week) {
           const currentSlot = timeSlots[k];
           if (endHour > currentSlot.endHour || (endHour === currentSlot.endHour && endMinute >= currentSlot.endMinute)) {
             spanCount++;
-          } else {
-            break;
-          }
+          } else { break; }
         }
         if (spanCount === 0) spanCount = 1;
         if (spanCount > 1) {
@@ -85,6 +82,8 @@ function renderTable(week) {
             if (i + k < timeSlots.length) spannedCells[i + k][j] = true;
           }
         }
+        
+        // 恢复为仅使用 CSS 类来定义样式
         td.className = "course";
         td.innerText = `${event.summary}\n${event.teacher || ''}\n@${event.location}`;
       }
@@ -106,18 +105,13 @@ function findInitialWeek() {
 
 function initializeSchedule() {
   const eventsData = localStorage.getItem('courseEvents');
-
   if (!eventsData) {
     window.location.href = 'login.html';
     return;
   }
-
   try {
     const parsedEvents = JSON.parse(eventsData);
     events = parsedEvents.sort((a, b) => new Date(a.start) - new Date(b.start));
-    if (events.length === 0) {
-        alert('您的课表为空，请确认。');
-    }
     findInitialWeek();
   } catch (error) {
     console.error('解析本地课程数据失败:', error);
@@ -127,18 +121,17 @@ function initializeSchedule() {
   }
 }
 
+// --- 事件监听 ---
 prevWeekBtn.addEventListener("click", () => {
   if (currentWeek > 1) {
     currentWeek--;
     renderTable(currentWeek);
   }
 });
-
 nextWeekBtn.addEventListener("click", () => {
   currentWeek++;
   renderTable(currentWeek);
 });
-
 logoutBtn.addEventListener("click", () => {
     if (confirm("您确定要退出登录并清除本地缓存吗？")) {
         localStorage.removeItem('courseEvents');
@@ -146,5 +139,4 @@ logoutBtn.addEventListener("click", () => {
         window.location.href = 'login.html';
     }
 });
-
 document.addEventListener('DOMContentLoaded', initializeSchedule);

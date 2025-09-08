@@ -52,7 +52,11 @@ app.post('/api/get-schedule', async (req, res) => {
     }
 });
 
-function parseIcsToJSON(icsContent, tzOffsetHours = 0) {
+function parseIcsToJSON(icsContent) {
+    // 【核心修改】从 .env 文件中读取时区偏移量，如果未设置则默认为 0
+    const tzOffsetHours = parseInt(process.env.TIMEZONE_OFFSET || '0', 10);
+    console.log(`[TIMEZONE] Using timezone offset: +${tzOffsetHours} hours.`);
+
     const events = [];
     const lines = icsContent.split(/\r\n|\n/);
     let currentEvent = null;

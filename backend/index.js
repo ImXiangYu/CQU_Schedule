@@ -111,7 +111,6 @@ function parseIcsDate(icsDate, tzOffsetHours) {
     return `${yearStr}-${monthStr}-${dayStr}T${hourStr}:${minuteStr}:${secondStr}`;
 }
 
-app.listen(PORT, () => {
+app.listen(PORT, '127.0.0.1', () => {
     console.log(`后端服务已启动，正在监听 http://localhost:${PORT}`);
-    console.log(`现在您可以在浏览器中打开 http://localhost:3000/login.html`);
 });

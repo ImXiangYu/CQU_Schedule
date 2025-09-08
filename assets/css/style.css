@@ -1,0 +1,143 @@
+:root {
+  --table-font-size: clamp(11px, 0.8vw + 0.5rem, 16px);
+}
+
+body {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+  margin: 0;
+  padding: 0;
+  text-align: center;
+  background-color: #f9f9f9; /* The grey page background */
+}
+.container {
+  max-width: 1200px;
+  margin: 20px auto;
+  padding: 10px;
+  background-color: #fff;
+  box-shadow: 0 0 15px rgba(0,0,0,0.1);
+  border-radius: 8px;
+  /* 【核心修改 1】移除 overflow: hidden，允许伪元素“溢出”到屏幕边缘 */
+  /* overflow: hidden; */
+}
+.header {
+  background: #3b9cff;
+  color: white;
+  padding: 10px 20px;
+  font-size: 24px;
+  font-weight: bold;
+  border-radius: 8px 8px 8px 8px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.controls {
+  padding: 10px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 20px;
+}
+.control-group {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+.controls button {
+  background-color: #f0f0f0;
+  color: #333;
+  border: 1px solid #ccc;
+  padding: 8px 16px;
+  border-radius: 5px;
+  font-size: 14px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+.controls button:hover {
+  background-color: #e0e0e0;
+}
+.controls button:disabled {
+  background-color: #f5f5f5;
+  color: #aaa;
+  cursor: not-allowed;
+}
+
+.table-container {
+    width: 100%;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+}
+
+table {
+  border-collapse: collapse;
+  width: 100%;
+  table-layout: fixed;
+  min-width: 700px;
+  border: none;
+}
+th, td {
+  border: 1px solid #e0e0e0;
+  text-align: center;
+  vertical-align: middle;
+  height: 60px;
+  font-size: var(--table-font-size);
+  padding: 4px;
+  word-break: break-all;
+}
+th {
+  background: #f5f5f5;
+  font-size: calc(var(--table-font-size) + 1px);
+}
+.course {
+  background-color: #cde8ff;
+  color: #0056b3;
+  font-weight: bold;
+  border-radius: 4px;
+  line-height: 1.4;
+}
+
+/* --- 【核心修改 2】修改固定列的样式 --- */
+tr > th:first-child {
+    position: -webkit-sticky; 
+    position: sticky;
+    left: 0; 
+    z-index: 1;
+    /* 将单元格本身背景设为透明，让伪元素背景显示出来 */
+    background-color: transparent; 
+}
+
+/* --- 【核心修改 3】为固定列创建一个伪元素作为背景面板 --- */
+tr > th:first-child::before {
+    content: '';
+    position: absolute;
+    /* top/right/bottom/left 定义了伪元素的位置和大小 */
+    top: 0;
+    /* 贴紧单元格的右边缘 */
+    right: 0; 
+    bottom: -1px; /* 稍微向下延伸1px以覆盖底部边框 */
+    /* 向左延伸一个屏幕宽度，确保能覆盖到屏幕最左侧 */
+    left: -100vw; 
+    /* 设置纯白背景 */
+    background-color: #fff;
+    /* 将右边框画在这个背景板上 */
+    border-right: 1px solid #e0e0e0;
+    /* 将这个背景板置于文字内容的后方 */
+    z-index: -1;
+}
+
+#login-container { max-width: 400px; margin-top: 100px; padding-bottom: 30px; }
+#login-form { display: flex; flex-direction: column; gap: 15px; padding: 20px; }
+#login-form input { padding: 12px; font-size: 16px; border: 1px solid #ccc; border-radius: 5px; }
+#login-form button { background-color: #3b9cff; color: white; border: none; padding: 12px; border-radius: 5px; font-size: 16px; cursor: pointer; transition: background-color 0.3s; }
+#login-form button:hover { background-color: #007bff; }
+#login-form button:disabled { background-color: #a0a0a0; cursor: not-allowed; }
+#status-message { margin-top: 10px; min-height: 20px; font-weight: bold; }
+.privacy-notice { font-size: 12px; color: #6c757d; margin-top: 15px; padding: 0 20px; }
+#logoutBtn { background-color: rgba(255, 255, 255, 0.2); border: 1px solid #fff; color: #fff; padding: 6px 12px; font-size: 13px; border-radius: 5px; cursor: pointer; transition: background-color 0.3s, color 0.3s; }
+#logoutBtn:hover { background-color: #fff; color: #3b9cff; }
+
+@media (max-width: 768px) {
+    .container { margin: 10px; padding: 5px; }
+    .header { font-size: 20px; padding: 10px 15px; }
+    .controls { flex-direction: column; }
+}

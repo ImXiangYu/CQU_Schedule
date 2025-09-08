@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>课程表</title>
+  <link rel="stylesheet" href="assets/css/style.css">
+</head>
+<body>
+  <div class="container">
+    <div class="header" id="header">
+      <span id="header-title">课程表</span>
+      <button id="logoutBtn" title="清除本地缓存并返回登录页面">退出登录</button>
+    </div>
+    <div class="controls">
+      <div class="control-group">
+        <button id="prevWeek">上一周</button>
+        <button id="nextWeek">下一周</button>
+      </div>
+    </div>
+    <div class="table-container">
+      <table id="timetable"></table>
+    </div>
+  </div>
+  <script src="assets/js/main.js" type="module"></script>
+</body>
+</html>

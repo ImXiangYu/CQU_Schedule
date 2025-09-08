@@ -1,6 +1,12 @@
 <!DOCTYPE html>
 <html lang="zh">
 <head>
+  <script>
+  // 如果检测到是手机，则自动跳转到 mobile.html
+  if (window.innerWidth <= 768) {
+    window.location.replace('mobile.html');
+  }
+  </script>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>课程表</title>

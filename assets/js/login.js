@@ -45,7 +45,13 @@ loginForm.addEventListener('submit', async (e) => {
         localStorage.setItem('courseEvents', JSON.stringify(data));
         
         setTimeout(() => {
-            window.location.href = 'index.html';
+            // 【核心修改】登录成功后，根据设备宽度判断跳转地址
+            const isMobile = window.innerWidth <= 768;
+            if (isMobile) {
+                window.location.href = 'mobile.html';
+            } else {
+                window.location.href = 'index.html';
+            }
         }, 1000);
 
     } catch (error) {

@@ -52,7 +52,7 @@ app.post('/api/get-schedule', async (req, res) => {
     }
 });
 
-function parseIcsToJSON(icsContent, tzOffsetHours = 8) {
+function parseIcsToJSON(icsContent, tzOffsetHours = 0) {
     const events = [];
     const lines = icsContent.split(/\r\n|\n/);
     let currentEvent = null;

@@ -1,0 +1,175 @@
+:root {
+  --table-font-size: clamp(10px, 2.5vw, 12px);
+  --theme-color: #3b9cff;
+  --light-gray-bg: #f8f9fa;
+  --border-color: #e9ecef;
+}
+
+body {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif;
+  margin: 0;
+  padding: 0;
+  text-align: center;
+  background-color: #f9f9f9;
+}
+
+.container {
+  margin: 0;
+  padding: 0;
+  background-color: #fff;
+}
+
+.header {
+  background: var(--theme-color);
+  color: white;
+  padding: 10px 15px;
+  font-size: 18px;
+  font-weight: bold;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.controls {
+  padding: 8px 0;
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  border-bottom: 1px solid var(--border-color);
+}
+
+.controls button {
+  background-color: #f0f0f0;
+  color: #333;
+  border: 1px solid #ccc;
+  padding: 6px 12px;
+  font-size: 13px;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+/* =============================================================== */
+/* 【重写】移动端标题栏按钮样式                                     */
+/* =============================================================== */
+.header-buttons {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.header-btn {
+    background: rgba(255, 255, 255, 0.2);
+    color: white;
+    border: 1px solid rgba(255, 255, 255, 0.5);
+    padding: 4px 10px;
+    font-size: 13px;
+    border-radius: 5px;
+    cursor: pointer;
+    text-decoration: none;
+    display: inline-block;
+    transition: background-color 0.2s;
+}
+
+.header-btn:hover {
+    background: rgba(255, 255, 255, 0.4);
+}
+
+
+/* =============================================================== */
+/* 移动端课表Grid布局样式 (无变动)                                */
+/* =============================================================== */
+.timetable-grid {
+    display: grid;
+    grid-template-columns: 30px repeat(7, 1fr);
+    grid-auto-rows: minmax(5em, auto);
+    border-left: 1px solid var(--border-color);
+}
+/* ... (其他课表样式保持不变) ... */
+.grid-item { display: flex; flex-direction: column; align-items: center; justify-content: center; border-right: 1px solid var(--border-color); border-bottom: 1px solid var(--border-color); font-size: var(--table-font-size); padding: 2px; }
+.grid-header { background-color: #f5f5f5; font-weight: bold; font-size: calc(var(--table-font-size) + 1px); }
+.time-header { font-weight: bold; background-color: var(--light-gray-bg); color: #888; font-size: 14px; }
+.day-header { background-color: #fff; }
+.month-header { background-color: #fff; color: var(--theme-color); font-size: 16px; font-weight: bold; line-height: 1; }
+.month-header div:last-child { font-size: 12px; margin-top: 2px; }
+.course { box-sizing: border-box; padding: 3px; border-radius: 4px; color: white; font-size: 10px; font-weight: bold; line-height: 1.3; text-align: center; display: flex; flex-direction: column; justify-content: center; align-items: center; grid-column-start: var(--grid-col); grid-row-start: var(--grid-row); grid-row-end: span var(--grid-span); }
+.course-location { font-size: 9px; opacity: 0.8; margin-top: 2px; }
+.course:nth-of-type(6n+1) { background-color: #6d6dff; }
+.course:nth-of-type(6n+2) { background-color: #ff9f43; }
+.course:nth-of-type(6n+3) { background-color: #4caf50; }
+.course:nth-of-type(6n+4) { background-color: #2196f3; }
+.course:nth-of-type(6n+5) { background-color: #f44336; }
+.course:nth-of-type(6n+0) { background-color: #9c27b0; }
+
+
+/* =============================================================== */
+/* 【重写】信息页面 (info.html) 专属样式                         */
+/* =============================================================== */
+.info-header {
+    justify-content: center;
+    position: relative;
+}
+.info-header h1 {
+    font-size: 18px;
+    margin: 0;
+}
+.back-btn {
+    position: absolute;
+    left: 15px;
+    color: white;
+    text-decoration: none;
+    font-size: 14px;
+    padding: 5px;
+}
+.info-content {
+    padding: 20px 15px;
+    text-align: left;
+}
+.info-content h2 {
+    font-size: 1.1rem;
+    color: #343a40;
+    margin: 0 0 15px 0;
+    border-bottom: 1px solid var(--border-color);
+    padding-bottom: 10px;
+}
+#time-slots-list {
+    list-style: none;
+    padding: 0;
+    margin: 0 0 30px 0;
+}
+#time-slots-list li {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 15px;
+    margin-bottom: -1px; /* 让边框合并 */
+    border: 1px solid var(--border-color);
+}
+#time-slots-list li:first-child {
+    border-top-left-radius: 8px;
+    border-top-right-radius: 8px;
+}
+#time-slots-list li:last-child {
+    border-bottom-left-radius: 8px;
+    border-bottom-right-radius: 8px;
+}
+#time-slots-list li:nth-child(even) {
+    background-color: var(--light-gray-bg);
+}
+#time-slots-list li strong {
+    color: #495057;
+    font-size: 14px;
+}
+#time-slots-list li span {
+    color: var(--theme-color);
+    font-weight: 600;
+    font-size: 14px;
+}
+.info-notice {
+    padding: 15px;
+    border-radius: 5px;
+    background: #eef7ff;
+    border-left: 5px solid var(--theme-color);
+    color: #3a5b74;
+    font-size: 14px;
+    line-height: 1.6;
+}

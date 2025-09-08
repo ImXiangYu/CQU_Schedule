@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>课程表 - 移动版</title>
+  <link rel="stylesheet" href="assets/css/mobile.css">
+</head>
+<body>
+  <script>
+    if (window.innerWidth > 768) {
+      window.location.replace('index.html');
+    }
+  </script>
+
+  <div class="container">
+    <div class="header">
+      <span id="header-title">课程表</span>
+      <div class="header-buttons">
+        <a href="info.html" id="infoBtn" class="header-btn">ℹ️</a>
+        <button id="logoutBtn" class="header-btn" title="清除本地缓存并返回登录页面">退出</button>
+      </div>
+    </div>
+    <div class="controls">
+      <button id="prevWeek">上一周</button>
+      <button id="nextWeek">下一周</button>
+    </div>
+    <div id="timetable" class="timetable-grid"></div>
+  </div>
+  <script src="assets/js/mobile.js" type="module"></script>
+</body>
+</html>

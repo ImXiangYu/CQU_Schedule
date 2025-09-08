@@ -1,7 +1,8 @@
 // assets/js/main.js
 
 import { timeSlots, firstWeek } from './config.js';
-// 移除了 color-utils.js 的导入
+// 【新增】导入颜色管理工具
+import { getColorForCourse, resetColorAssignments } from './color-utils.js';
 
 // --- 全局状态 ---
 let currentWeek = 1;
@@ -15,10 +16,10 @@ const header = document.getElementById("header");
 const timetable = document.getElementById("timetable");
 const headerTitle = document.getElementById("header-title");
 
-// --- 核心功能函数 ---
-
 function renderTable(week) {
-  // 移除了 resetColorAssignments()
+  // 【新增】每次重新渲染表格时，重置颜色分配
+  resetColorAssignments();
+
   prevWeekBtn.disabled = (week <= 1);
   nextWeekBtn.disabled = (week >= 25);
   headerTitle.innerText = `课程表（第${week}周）`;
@@ -26,7 +27,6 @@ function renderTable(week) {
 
   const displayWeekStart = new Date(firstWeek.getTime() + (week - 1) * 7 * 86400000);
 
-  // 渲染表头 (日期)
   const days = ["周一", "周二", "周三", "周四", "周五", "周六", "周日"];
   const headerRow = document.createElement("tr");
   headerRow.innerHTML = "<th>时间</th>";
@@ -36,7 +36,6 @@ function renderTable(week) {
   }
   timetable.appendChild(headerRow);
 
-  // 渲染课程表主体
   const spannedCells = Array(timeSlots.length).fill(0).map(() => Array(7).fill(false));
   for (let i = 0; i < timeSlots.length; i++) {
     const row = document.createElement("tr");
@@ -50,6 +49,7 @@ function renderTable(week) {
       const day = new Date(displayWeekStart.getTime() + j * 86400000);
 
       const event = events.find(ev => {
+        // ... find logic is the same ...
         const cellYear = day.getFullYear();
         const cellMonth = day.getMonth();
         const cellDate = day.getDate();
@@ -65,6 +65,7 @@ function renderTable(week) {
       });
 
       if (event) {
+        // ... span calculation is the same ...
         const endDateObj = new Date(event.end);
         const endHour = endDateObj.getHours();
         const endMinute = endDateObj.getMinutes();
@@ -83,7 +84,11 @@ function renderTable(week) {
           }
         }
         
-        // 恢复为仅使用 CSS 类来定义样式
+        // 【核心修改】通过JS动态设置颜色
+        const courseColor = getColorForCourse(event.summary);
+        td.style.backgroundColor = courseColor;
+        td.style.color = '#fff'; // 确保文字在所有背景色上都清晰
+
         td.className = "course";
         td.innerText = `${event.summary}\n${event.teacher || ''}\n@${event.location}`;
       }
@@ -93,6 +98,7 @@ function renderTable(week) {
   }
 }
 
+// ... (findInitialWeek, initializeSchedule, and event listeners remain unchanged) ...
 function findInitialWeek() {
   if (events.length > 0) {
     const firstEventDate = new Date(events[0].start);
@@ -102,7 +108,6 @@ function findInitialWeek() {
   }
   renderTable(currentWeek);
 }
-
 function initializeSchedule() {
   const eventsData = localStorage.getItem('courseEvents');
   if (!eventsData) {
@@ -120,18 +125,8 @@ function initializeSchedule() {
     window.location.href = 'login.html';
   }
 }
-
-// --- 事件监听 ---
-prevWeekBtn.addEventListener("click", () => {
-  if (currentWeek > 1) {
-    currentWeek--;
-    renderTable(currentWeek);
-  }
-});
-nextWeekBtn.addEventListener("click", () => {
-  currentWeek++;
-  renderTable(currentWeek);
-});
+prevWeekBtn.addEventListener("click", () => { if (currentWeek > 1) { currentWeek--; renderTable(currentWeek); } });
+nextWeekBtn.addEventListener("click", () => { currentWeek++; renderTable(currentWeek); });
 logoutBtn.addEventListener("click", () => {
     if (confirm("您确定要退出登录并清除本地缓存吗？")) {
         localStorage.removeItem('courseEvents');

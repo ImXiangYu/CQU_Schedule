@@ -89,8 +89,6 @@ th {
   font-size: calc(var(--table-font-size) + 1px);
 }
 .course {
-  background-color: #cde8ff;
-  color: #0056b3;
   font-weight: bold;
   border-radius: 4px;
   line-height: 1.4;

@@ -1,6 +1,8 @@
 // assets/js/mobile.js
 
 import { timeSlots, firstWeek } from './config.js';
+// 【新增】导入颜色管理工具
+import { getColorForCourse, resetColorAssignments } from './color-utils.js';
 
 let currentWeek = 1;
 let events = [];
@@ -12,6 +14,9 @@ const headerTitle = document.getElementById("header-title");
 const timetable = document.getElementById("timetable");
 
 function renderTable(week) {
+  // 【新增】每次重新渲染表格时，重置颜色分配
+  resetColorAssignments();
+
   prevWeekBtn.disabled = (week <= 1);
   nextWeekBtn.disabled = (week >= 25);
   headerTitle.innerText = `课程表(第${week}周)`;
@@ -93,6 +98,11 @@ function renderTable(week) {
 
     const courseDiv = document.createElement('div');
     courseDiv.className = 'course';
+
+    // 通过JS动态设置颜色
+    const courseColor = getColorForCourse(event.summary);
+    courseDiv.style.backgroundColor = courseColor;
+
     courseDiv.innerHTML = `<div class="course-summary">${event.summary}</div><div class="course-location">${event.location}</div>`;
     courseDiv.style.setProperty('--grid-col', gridCol);
     courseDiv.style.setProperty('--grid-row', gridRow);
